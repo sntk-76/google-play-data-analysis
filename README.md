@@ -1,2 +1,2 @@
-# google play data analysis
- in this project I analyse the google play apps in base of the diiferent category and their usage with the use of the python, dataframe library
+# Google Play data analysis
+ In this project, I analyze the Google Play apps based on the different category and their usage with the use of the Python, data frame library
