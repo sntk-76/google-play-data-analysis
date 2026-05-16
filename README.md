@@ -1,211 +1,161 @@
-# Google Play Store Data Analysis
+![Google Play Data Analysis cover](assets/google-play-data-analysis-cover.png)
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Dataset](#dataset)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Data Preprocessing](#data-preprocessing)
-- [Analysis and Visualization](#analysis-and-visualization)
-- [Results](#results)
-- [Conclusion](#conclusion)
-- [Acknowledgements](#acknowledgements)
+# Google Play Data Analysis
 
-## Introduction
-This project involves analyzing a dataset from the Google Play Store. The objective is to extract insights from the data, such as the relationship between app categories and their ratings, installs, and prices. The analysis includes data preprocessing, cleaning, and visualization.
+**Exploratory data analysis project for Google Play Store app metadata using Python, Pandas, NumPy, Matplotlib, and Jupyter Notebook.**
+
+[GitHub profile](https://github.com/sntk-76)
+
+## Overview
+
+Google Play Data Analysis explores app-market metadata from the Google Play Store to understand how categories, ratings, installs, pricing, free/paid status, and currencies vary across applications.
+
+The project demonstrates a practical analytics workflow: loading a raw app metadata dataset, selecting business-relevant fields, handling missing values, converting string-based metrics into numeric values, aggregating category-level statistics, and visualizing patterns with Matplotlib.
+
+## Why This Project Matters
+
+App-store datasets are useful for market analysis because they combine product metadata, user ratings, install behavior, pricing strategy, content ratings, developer information, and monetization signals. Cleaning this kind of dataset requires careful type handling because fields such as installs and prices often arrive as strings or mixed formats.
+
+For recruiters and technical reviewers, this repository shows core data analysis skills: data inspection, preprocessing, type conversion, feature selection, grouped aggregation, descriptive statistics, and visual storytelling.
+
+## Core Capabilities
+
+| Capability | Implementation |
+| --- | --- |
+| Dataset inspection | Reviews Google Play Store metadata columns and data types in Jupyter. |
+| Field selection | Focuses analysis on category, rating, installs, price, free/paid status, and currency. |
+| Missing-value handling | Drops incomplete rows before calculating descriptive and grouped statistics. |
+| Type conversion | Converts install counts from string format into numeric values for analysis. |
+| Category aggregation | Computes category-level averages for rating, installs, and price. |
+| Market segmentation | Compares free vs. paid apps and currency distribution. |
+| Visualization | Produces Matplotlib charts for rating/category and price/category relationships. |
+
+## Analysis Workflow
+
+```mermaid
+flowchart LR
+    A[Google Play CSV] --> B[Jupyter Notebook]
+    B --> C[Column Inspection]
+    C --> D[Missing-Value Cleanup]
+    D --> E[Install Count Conversion]
+    E --> F[Category Aggregation]
+    F --> G[Visual Analysis]
+    G --> H[Market Insights]
+```
+
+## Technical Stack
+
+| Layer | Tools |
+| --- | --- |
+| Language | Python |
+| Notebook environment | Jupyter Notebook |
+| Data handling | Pandas, NumPy |
+| Visualization | Matplotlib |
+| Output artifacts | PNG chart exports |
+
+## Repository Structure
+
+```text
+google-play-data-analysis/
+|-- assets/
+|   `-- google-play-data-analysis-cover.png
+|-- google play apps.ipynb        # Main exploratory analysis notebook
+|-- rating_vs_category.png        # Exported rating/category visualization
+|-- price_vs_category.png         # Exported price/category visualization
+|-- requirements.txt
+|-- LICENSE
+`-- README.md
+```
 
 ## Dataset
-The dataset used in this project is the Google Play Store dataset, which contains information about various applications. The dataset includes the following columns:
-- App Name
-- App Id
+
+The analysis expects a Google Play Store metadata CSV with fields such as:
+
+- App name and app ID
 - Category
-- Rating
-- Rating Count
-- Installs
-- Minimum Installs
-- Maximum Installs
-- Free
-- Price
-- Currency
-- Size
-- Minimum Android
-- Developer Id
-- Developer Website
-- Developer Email
-- Released
-- Last Updated
-- Content Rating
-- Privacy Policy
-- Ad Supported
-- In App Purchases
-- Editors Choice
-- Scraped Time
+- Rating and rating count
+- Installs, minimum installs, and maximum installs
+- Free/paid flag
+- Price and currency
+- App size and minimum Android version
+- Developer metadata
+- Release and update dates
+- Content rating
+- Ad support, in-app purchases, and editor choice flags
 
-## Project Structure
-The project directory is structured as follows:
-```
-google-play-data-analysis/
-├── data/
-│   └── Google-Playstore.csv
-├── src/
-│   └── analysis.py
-└── README.md
-```
+The CSV is not committed in this repository. To reproduce the notebook, download a compatible Google Play Store dataset and update the `pd.read_csv(...)` path in `google play apps.ipynb`.
 
-## Installation
-To run this project, ensure you have Python installed on your system. You will also need to install the following Python libraries:
-- pandas
-- numpy
-- matplotlib
+## Preprocessing Steps
 
-You can install these libraries using pip:
+The notebook performs the following preparation steps:
+
+1. Loads the Google Play Store CSV into a Pandas DataFrame.
+2. Reviews available columns and initial dataset structure.
+3. Creates focused numerical and categorical DataFrames.
+4. Drops rows with missing values before analysis.
+5. Converts the `Installs` column from string format into a numeric field.
+6. Generates descriptive statistics for numerical and categorical subsets.
+7. Aggregates rating, installs, and price metrics by app category.
+
+## Visual Analysis
+
+The notebook explores:
+
+- Average rating by app category.
+- Average installs by app category.
+- Average price by app category.
+- Free vs. paid app distribution.
+- Currency distribution.
+- Rating vs. price relationship.
+- Installs vs. price relationship.
+
+### Example Outputs
+
+![Rating vs Category](rating_vs_category.png)
+
+![Price vs Category](price_vs_category.png)
+
+## Running Locally
+
 ```bash
-pip install pandas numpy matplotlib
-```
-
-## Usage
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/google-play-data-analysis.git
-```
-2. Navigate to the project directory:
-```bash
+git clone https://github.com/sntk-76/google-play-data-analysis.git
 cd google-play-data-analysis
+
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
 ```
-3. Run the analysis script:
+
+On macOS/Linux, activate the environment with:
+
 ```bash
-python src/analysis.py
+source .venv/bin/activate
 ```
 
-## Data Preprocessing
-The data preprocessing steps include:
-1. **Importing Libraries:**
-    ```python
-    import pandas as pd
-    import numpy as np
-    import matplotlib.pyplot as plt
-    ```
-2. **Loading the Dataset:**
-    ```python
-    csv_file = pd.read_csv('data/Google-Playstore.csv')
-    initial_data_frame = pd.DataFrame(csv_file)
-    ```
-3. **Inspecting the Dataset:**
-    ```python
-    print(initial_data_frame.columns)
-    ```
-4. **Separating Numerical and String Data:**
-    ```python
-    numerical_base_dataframe = pd.DataFrame(initial_data_frame, columns=['Category', 'Rating', 'Installs', 'Price'])
-    string_base_dataframe = pd.DataFrame(initial_data_frame, columns=['Category', 'Free', 'Currency'])
-    ```
-5. **Handling Missing Values:**
-    ```python
-    NAN_cleared_initila_dataframe = initial_data_frame.dropna()
-    NAN_cleared_numerical_base_dataframe = numerical_base_dataframe.dropna()
-    NAN_cleared_string_base_dataframe = string_base_dataframe.dropna()
-    ```
-6. **Converting Data Types:**
-    ```python
-    NAN_cleared_numerical_base_dataframe['Installs'] = pd.to_numeric(NAN_cleared_numerical_base_dataframe['Installs'].str.rstrip('+'), errors='coerce')
-    ```
+Then open the notebook:
 
-## Analysis and Visualization
-Various analyses and visualizations are performed to extract insights:
-1. **Descriptive Statistics:**
-    ```python
-    print(NAN_cleared_numerical_base_dataframe.describe(include='all'))
-    print(NAN_cleared_string_base_dataframe.describe(include='all'))
-    ```
-2. **Group By and Mean Calculation:**
-    ```python
-    final_initial_dataframe = NAN_cleared_numerical_base_dataframe.groupby('Category')[['Rating', 'Installs', 'Price']].mean()
-    final_initial_dataframe = final_initial_dataframe.reset_index()
-    ```
-3. **Visualizations:**
-    - **Rating vs Category:**
-        ```python
-        plt.figure(figsize=(15,8))
-        plt.scatter(final_initial_dataframe['Category'], final_initial_dataframe['Rating'])
-        plt.title('Rating vs Category')
-        plt.xlabel('Category')
-        plt.ylabel('Rating')
-        plt.xticks(rotation=90)
-        plt.grid()
-        plt.show()
-        ```
-    - **Installs vs Category:**
-        ```python
-        plt.figure(figsize=(15,8))
-        plt.scatter(final_initial_dataframe['Category'], final_initial_dataframe['Installs'])
-        plt.xlabel('Category')
-        plt.ylabel('Installs')
-        plt.title('Installs vs Category')
-        plt.grid()
-        plt.xticks(rotation=90)
-        plt.show()
-        ```
-    - **Price vs Category:**
-        ```python
-        plt.figure(figsize=(15,8))
-        plt.scatter(final_initial_dataframe['Category'], final_initial_dataframe['Price'])
-        plt.xlabel('Category')
-        plt.ylabel('Price')
-        plt.title('Price vs Category')
-        plt.grid()
-        plt.xticks(rotation=90)
-        plt.show()
-        ```
-    - **Count of True and False Values:**
-        ```python
-        value_counts = NAN_cleared_string_base_dataframe['Free'].value_counts()
-        value_counts.plot(kind='bar', rot=0)
-        plt.title('Count of True and False Values')
-        plt.xlabel('Value')
-        plt.ylabel('Count')
-        plt.show()
-        ```
-    - **Count of Different Currencies:**
-        ```python
-        currency_count = NAN_cleared_string_base_dataframe['Currency'].value_counts()
-        currency_count.plot(kind='bar', rot=0)
-        plt.title('Count of Different Currencies')
-        plt.xlabel('Currency')
-        plt.ylabel('Count')
-        plt.show()
-        ```
-    - **Rating vs Price:**
-        ```python
-        plt.figure(figsize=(15,8))
-        plt.scatter(final_initial_dataframe['Rating'], final_initial_dataframe['Price'])
-        plt.xlabel('Rating')
-        plt.ylabel('Price')
-        plt.title('Rating vs Price')
-        plt.grid()
-        plt.xticks(rotation=90)
-        plt.show()
-        ```
-    - **Installs vs Price:**
-        ```python
-        plt.figure(figsize=(15,8))
-        plt.scatter(final_initial_dataframe['Installs'], final_initial_dataframe['Price'])
-        plt.xlabel('Instals')
-        plt.ylabel('Price')
-        plt.title('Installs vs Price')
-        plt.grid()
-        plt.xticks(rotation=90)
-        plt.show()
-        ```
+```bash
+jupyter notebook "google play apps.ipynb"
+```
 
-## Results
-The analysis revealed several insights, such as:
-- The average ratings, installs, and prices across different app categories.
-- The distribution of free and paid apps.
-- The usage of different currencies for app pricing.
+Before running all cells, place the dataset locally and update the notebook's CSV path.
 
-## Conclusion
-This project demonstrates how to preprocess, clean, and analyze a large dataset. The visualizations provide valuable insights into the app market on the Google Play Store. Further analysis can be conducted to explore other aspects of the dataset.
+## Project Highlights
 
-## Acknowledgements
-This project was inspired by the need to understand the Google Play Store app market better. The dataset was sourced from [Google Play Store](https://www.kaggle.com/lava18/google-play-store-apps).
+- Demonstrates a complete exploratory data analysis workflow from raw app metadata to visual outputs.
+- Handles real-world data preparation issues such as missing values and numeric conversion from string fields.
+- Uses category-level aggregation to make app-market behavior easier to compare.
+- Produces simple, interpretable charts for rating and price analysis.
+- Keeps the project lightweight and easy to reproduce with standard Python analytics libraries.
+
+## Future Improvements
+
+- Move notebook logic into a reusable Python analysis script.
+- Add a `data/` folder convention with clear instructions for expected CSV naming.
+- Add richer visualizations for installs, content ratings, monetization, and category share.
+- Add correlation analysis between installs, price, ratings, and rating count.
+- Build an interactive dashboard with Streamlit or Plotly.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
